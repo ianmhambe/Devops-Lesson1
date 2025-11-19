@@ -1,0 +1,16 @@
+# Backend team owns all files in the backend folder
+/server-backend/ @tomwakhungu
+
+# Frontend team owns all files in the frontend folder
+/frontend/ @jeremyomeriks-dotcom
+
+# DevOps team owns Kubernetes and CI/CD files
+/k8s/ @ianmhambe
+/.github/workflows/ @ianmhambe
+
+# Root-level configuration files owned by DevOps
+Dockerfile @devops-team
+requirements.txt @ianmhambe
+
+# General catch-all: any other files require review from team leads
+* @AyanwWrsame

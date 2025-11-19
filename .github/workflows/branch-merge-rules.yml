@@ -1,0 +1,25 @@
+name: Branch Merge Rules
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  enforce-branch-rules:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR base and source branches
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const base = context.payload.pull_request.base.ref;
+            const head = context.payload.pull_request.head.ref;
+            const rules = [
+              { base: 'staging', allowed_head: ['develop'] },
+              { base: 'master', allowed_head: ['staging'] },
+              { base: 'develop', allowed_head: [] }  // anyone can merge via PR
+            ];
+            const rule = rules.find(r => r.base === base);
+            if (rule && rule.allowed_head.length > 0 && !rule.allowed_head.includes(head)) {
+              core.setFailed(PR blocked: Only ${rule.allowed_head.join(', ')} can merge into ${base}.);
+            } else {
+              console.log(PR is allowed: ${head} → ${base});
+            }
